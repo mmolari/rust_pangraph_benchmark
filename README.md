@@ -14,7 +14,8 @@ Any alternative location can be simply encoded by changing the config file.
 
 ## running the pipeline
 
-Running the pipeline requires [snakemake](https://snakemake.readthedocs.io/en/stable/) v8+.
+Running the pipeline requires [snakemake](https://snakemake.readthedocs.io/en/stable/) v8+ and a working installation of conda/mamba.
+
 The pipeline is designed to run on a slurm cluster (see the [profile file](profiles/cluster/config.v8+.yaml)). It can be run with:
 
 ```sh
