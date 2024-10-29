@@ -29,7 +29,12 @@ def assign_type(df):
     df["User time (minutes)"] = df["User time (seconds)"] / 60
     df["System time (minutes)"] = df["System time (seconds)"] / 60
     df["Maximum resident set size (Gb)"] = df["Maximum resident set size (kbytes)"] / 1024 / 1024
-    df["Wall clock time (minutes)"] = pd.to_timedelta("00:" + df["Elapsed (wall clock) time"]).dt.total_seconds() / 60
+
+    # add hours to times that are missing it
+    times = df["Elapsed (wall clock) time"].copy()
+    missing_hour_mask = df["Elapsed (wall clock) time"].str.count(":") < 2
+    times[missing_hour_mask] = "00:" + times
+    df["Wall clock time (minutes)"] = pd.to_timedelta(times).dt.total_seconds() / 60
     return df
 
 
@@ -54,8 +59,9 @@ def create_plots(df, fig_file, logscale=False):
     subpanel(y="Maximum resident set size (Gb)", ax=axs[1,1])
     subpanel(y="graph file size (Mb)", ax=axs[1,2])
 
-    if logscale:
-        for ax in axs.flatten():
+    for ax in axs.flatten():
+        ax.grid(alpha=0.3)
+        if logscale:
             ax.set_xscale("log")
             ax.set_yscale("log")
 
@@ -75,6 +81,7 @@ def save_dataframe(df, fname):
         "Wall clock time (minutes)",
         "Maximum resident set size (Gb)",
         "graph file size (Mb)",
+        "Exit status",
     ]
     sdf = df[selected_cols].copy()
     sdf.sort_values(selected_cols[:2], inplace=True)
