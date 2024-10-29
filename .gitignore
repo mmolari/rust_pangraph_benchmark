@@ -1,0 +1,7 @@
+/.snakemake
+/data
+/results/*
+!/results/stats_log.png
+!/results/stats.png
+!/results/summary.csv
+/pangraph_rust

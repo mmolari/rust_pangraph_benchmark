@@ -1,0 +1,29 @@
+executor: slurm
+latency-wait: 30
+jobs: 10
+software-deployment-method: "conda"
+conda-frontend: "mamba"
+
+default-resources:
+    mem_mb: 500
+    slurm_extra: "'--qos=6hours'"
+    runtime: 358
+set-resources:
+    build_rust:
+        mem: 40GB
+        cpus_per_task: 16
+    build_julia:
+        mem: 40GB
+        cpus_per_task: 16
+    verify_rust:
+        mem: 40GB
+        cpus_per_task: 16
+    parse_log:
+        slurm_extra: "'--qos=30min'"
+        runtime: 10
+    stat_figs:
+        slurm_extra: "'--qos=30min'"
+        runtime: 10
+
+
+    
