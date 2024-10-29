@@ -88,7 +88,7 @@ rule stat_figs:
     output:
         fig="results/stats.png",
         fig_log="results/stats_log.png",
-        csv="results/summmary.csv",
+        csv="results/summary.csv",
     conda:
         "envs/general.yaml"
     shell:
