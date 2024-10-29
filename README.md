@@ -3,7 +3,7 @@
 ## setup
 
 **binaries:**
-Location of the binaries is encoded in the `binaries` entry of the [configfile](config.yaml). Currently:
+Location of the binaries is encoded in the `binaries` entry of the [config file](config.yaml). Currently:
 - the `pangraph` binary should be available in the path. This corresponds to the old julia version.
 - the `pangraph_rust` binary should be available in the root folder of the repository. This corresponds to the new rust implementation.
 
@@ -23,7 +23,7 @@ snakemake --profile profiles/cluster all
 
 ## results
 
-The pipeline produces the two benchmark summary images below, together with [a summart table](results/summmary.csv).
+The pipeline produces the two benchmark summary images below, together with [a summary table](results/summmary.csv).
 
 ![stats](results/stats.png)
 
