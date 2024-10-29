@@ -24,7 +24,7 @@ snakemake --profile profiles/cluster all
 
 ## results
 
-The pipeline produces the two benchmark summary images below, together with [a summary table](results/summmary.csv).
+The pipeline produces the two benchmark summary images below, together with [a summary table](results/summary.csv).
 
 ![stats](results/stats.png)
 
