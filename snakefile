@@ -15,10 +15,12 @@ rule build_rust:
     output:
         graph="results/graphs/rust_{n}.json",
         log="results/log/rust_{n}.txt",
+    params:
+        pg=config["binaries"]["rust"],
     shell:
         """
         /usr/bin/time -v \
-            ./pangraph_rust build \
+            {params.pg} build \
             -c -l 100 -a 10 -b 5 \
             {input.fa} > {output.graph}.tmp 2> {output.log}
         tr -d '[:space:]' < {output.graph}.tmp > {output.graph}
@@ -32,11 +34,13 @@ rule build_julia:
     output:
         graph="results/graphs/julia_{n}.json",
         log="results/log/julia_{n}.txt",
+    params:
+        pg=config["binaries"]["julia"],
     shell:
         """
         export JULIA_NUM_THREADS=16 && \
             /usr/bin/time -v \
-            pangraph build \
+            {params.pg} build \
             -c -l 100 -a 10 -b 5 \
             {input.fa} > {output.graph} 2> {output.log}
         """
@@ -48,10 +52,12 @@ rule verify_rust:
     output:
         graph="results/graphs/verify_{n}.json",
         log="results/log/verify_{n}.txt",
+    params:
+        pg=config["binaries"]["rust"],
     shell:
         """
         /usr/bin/time -v \
-            ./pangraph_rust build \
+            {params.pg} build \
             -c -l 100 -a 10 -b 5 \
             --verify \
             {input.fa} > {output.graph} 2> {output.log}
