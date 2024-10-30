@@ -44,6 +44,7 @@ def graph_filesize(fname):
 # Main function to handle argument parsing and writing to JSON
 def main():
     parser = argparse.ArgumentParser(description="Parse /usr/bin/time -v log file and export to JSON.")
+    parser.add_argument("--replicate", type=int, help="Replicate number.")
     parser.add_argument("--logfile", type=str, help="Path to the log file to parse.")
     parser.add_argument("--graph_file", type=str, help="output graph file")
     parser.add_argument("--output_json", type=str, help="Path to the output JSON file.")
@@ -56,7 +57,8 @@ def main():
     # Parse the log content
     parsed_data = parse_log(log_content)
     parsed_data["graph file size (Mb)"] = graph_filesize(args.graph_file)
-
+    parsed_data["replicate"] = args.replicate
+    
     with open(args.output_json, "w") as f:
         json.dump(parsed_data, f, indent=4)
 

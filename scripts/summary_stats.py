@@ -48,7 +48,8 @@ def load_json_files(json_files):
 def create_plots(df, fig_file, logscale=False):
 
     def subpanel(y, ax):
-        sns.lineplot(data=df, x="fasta file count", hue="type", y=y, ax=ax, marker=".")
+        sns.lineplot(data=df, x="fasta file count", hue="type", y=y, ax=ax, marker=".", errorbar="sd")
+        sns.scatterplot(data=df, x="fasta file count", hue="type", y=y, ax=ax, legend=False, size=5., alpha=0.4)
 
     fig, axs = plt.subplots(2,3, figsize=(10, 6), sharex=True)
 
@@ -75,6 +76,7 @@ def save_dataframe(df, fname):
     selected_cols = [
         "type",
         "fasta file count",
+        "replicate",
         "User time (minutes)",
         "System time (minutes)",
         "Percent of CPU this job got",
@@ -84,7 +86,7 @@ def save_dataframe(df, fname):
         "Exit status",
     ]
     sdf = df[selected_cols].copy()
-    sdf.sort_values(selected_cols[:2], inplace=True)
+    sdf.sort_values(selected_cols[:3], inplace=True)
     sdf.to_csv(fname, index=False)
 
 

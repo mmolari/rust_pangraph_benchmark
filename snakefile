@@ -1,20 +1,32 @@
 configfile: "config.yaml"
 
 
+import numpy as np
+from functools import cache
+
 accs = config["acc_nums"]
+R = int(config["n_replicates"])
 
 
-def acc_list(n):
-    """return the path of the first n files"""
-    return [f"data/{acc}.fa" for acc in accs[: int(n)]]
+@cache
+def acc_list(N, r):
+    """returns the path of N files, for replicate r"""
+    assert isinstance(N, int), f"{N=} should be integer"
+    assert isinstance(r, int), f"{r=} should be integer"
+    seed = r + 100 * N
+    np.random.seed(seed)
+    L = len(accs)
+    # pick N from L
+    nums = np.random.choice(L, N, replace=False)
+    return sorted([f"data/{accs[i]}.fa" for i in nums])
 
 
 rule build_rust:
     input:
-        fa=lambda w: acc_list(w.n),
+        fa=lambda w: acc_list(int(w.n), int(w.r)),
     output:
-        graph="results/graphs/rust_{n}.json",
-        log="results/log/rust_{n}.txt",
+        graph="results/graphs/rust_{n}_repl{r}.json",
+        log="results/log/rust_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["rust"],
     shell:
@@ -30,10 +42,10 @@ rule build_rust:
 
 rule build_julia:
     input:
-        fa=lambda w: acc_list(w.n),
+        fa=lambda w: acc_list(int(w.n), int(w.r)),
     output:
-        graph="results/graphs/julia_{n}.json",
-        log="results/log/julia_{n}.txt",
+        graph="results/graphs/julia_{n}_repl{r}.json",
+        log="results/log/julia_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["julia"],
     shell:
@@ -48,10 +60,10 @@ rule build_julia:
 
 rule verify_rust:
     input:
-        fa=lambda w: acc_list(w.n),
+        fa=lambda w: acc_list(int(w.n), int(w.r)),
     output:
-        graph="results/graphs/verify_{n}.json",
-        log="results/log/verify_{n}.txt",
+        graph="results/graphs/verify_{n}_repl{r}.json",
+        log="results/log/verify_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["rust"],
     shell:
@@ -66,13 +78,14 @@ rule verify_rust:
 
 rule parse_log:
     input:
-        log="results/log/{tool}_{n}.txt",
-        graph="results/graphs/{tool}_{n}.json",
+        log="results/log/{tool}_{n}_repl{r}.txt",
+        graph="results/graphs/{tool}_{n}_repl{r}.json",
     output:
-        "results/parsed_log/{tool}_{n}.json",
+        "results/parsed_log/{tool}_{n}_repl{r}.json",
     shell:
         """
         python scripts/parse_log.py \
+            --replicate {wildcards.r} \
             --logfile {input.log} \
             --graph_file {input.graph} \
             --output_json {output}
@@ -84,7 +97,7 @@ Ns = config["Ns"]
 
 rule stat_figs:
     input:
-        expand(rules.parse_log.output, n=Ns, tool=["julia", "rust", "verify"]),
+        expand(rules.parse_log.output, n=Ns, r=range(R), tool=["julia", "rust"]),
     output:
         fig="results/stats.png",
         fig_log="results/stats_log.png",
@@ -104,4 +117,3 @@ rule stat_figs:
 rule all:
     input:
         rules.stat_figs.output,
-        expand(rules.verify_rust.output, n=Ns),
