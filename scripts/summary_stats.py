@@ -49,7 +49,7 @@ def create_plots(df, fig_file, logscale=False):
 
     def subpanel(y, ax):
         sns.lineplot(data=df, x="fasta file count", hue="type", y=y, ax=ax, marker=".", errorbar="sd")
-        sns.scatterplot(data=df, x="fasta file count", hue="type", y=y, ax=ax, legend=False, size=5., alpha=0.4)
+        sns.scatterplot(data=df, x="fasta file count", hue="type", y=y, ax=ax, legend=False, size=5., alpha=0.5, marker=".")
 
     fig, axs = plt.subplots(2,3, figsize=(10, 6), sharex=True)
 
