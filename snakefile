@@ -65,7 +65,25 @@ rule verify_rust:
         graph="results/graphs/verify_{n}_repl{r}.json",
         log="results/log/verify_{n}_repl{r}.txt",
     params:
-        pg=config["binaries"]["rust_profiling"],
+        pg=config["binaries"]["rust_release"],
+    shell:
+        """
+        /usr/bin/time -v \
+            {params.pg} build \
+            -c -l 100 -a 10 -b 5 \
+            --verify \
+            {input.fa} > {output.graph} 2> {output.log}
+        """
+
+
+rule debug_rust:
+    input:
+        fa=lambda w: acc_list(int(w.n), int(w.r)),
+    output:
+        graph="results/graphs/debug_{n}_repl{r}.json",
+        log="results/log/debug_{n}_repl{r}.txt",
+    params:
+        pg=config["binaries"]["rust_debug"],
     shell:
         """
         /usr/bin/time -v \
@@ -97,9 +115,7 @@ Ns = config["Ns"]
 
 rule stat_figs:
     input:
-        expand(
-            rules.parse_log.output, n=Ns, r=range(R), tool=["julia", "rust", "verify"]
-        ),
+        expand(rules.parse_log.output, n=Ns, r=range(R), tool=["julia", "rust"]),
     output:
         fig="results/stats.png",
         fig_log="results/stats_log.png",
@@ -114,6 +130,16 @@ rule stat_figs:
             --out_csv {output.csv} \
             --logfiles {input}
         """
+
+
+rule debug:
+    input:
+        expand(rules.debug_rust.output, n=Ns, r=0),
+
+
+rule verify:
+    input:
+        expand(rules.verify_rust.output, n=Ns, r=range(R)),
 
 
 rule all:
