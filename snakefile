@@ -65,7 +65,7 @@ rule verify_rust:
         graph="results/graphs/verify_{n}_repl{r}.json",
         log="results/log/verify_{n}_repl{r}.txt",
     params:
-        pg=config["binaries"]["rust_debug"],
+        pg=config["binaries"]["rust_profiling"],
     shell:
         """
         /usr/bin/time -v \
