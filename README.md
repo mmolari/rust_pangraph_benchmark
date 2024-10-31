@@ -5,7 +5,8 @@
 **binaries:**
 Location of the binaries is encoded in the `binaries` entry of the [config file](config.yaml). Currently:
 - the `pangraph` binary should be available in the path. This corresponds to the old julia version.
-- the `pangraph_rust` binary should be available in the root folder of the repository. This corresponds to the new rust implementation.
+- the `pangraph_rust_release` binary should be available in the root folder of the repository. This corresponds to the new rust implementation in the `release` profile.
+- the `pangraph_rust_profiling` binary should be available in the root folder of the repository. This corresponds to the new rust implementation in the `profiling` profile, containing additional debug checks.
 
 Any alternative location can be simply encoded by changing the config file.
 

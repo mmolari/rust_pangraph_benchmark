@@ -4,4 +4,5 @@
 !/results/stats_log.png
 !/results/stats.png
 !/results/summary.csv
-/pangraph_rust
+/pangraph_rust_profiling
+/pangraph_rust_release

@@ -28,7 +28,7 @@ rule build_rust:
         graph="results/graphs/rust_{n}_repl{r}.json",
         log="results/log/rust_{n}_repl{r}.txt",
     params:
-        pg=config["binaries"]["rust"],
+        pg=config["binaries"]["rust_release"],
     shell:
         """
         /usr/bin/time -v \
@@ -65,7 +65,7 @@ rule verify_rust:
         graph="results/graphs/verify_{n}_repl{r}.json",
         log="results/log/verify_{n}_repl{r}.txt",
     params:
-        pg=config["binaries"]["rust"],
+        pg=config["binaries"]["rust_profiling"],
     shell:
         """
         /usr/bin/time -v \
@@ -97,7 +97,9 @@ Ns = config["Ns"]
 
 rule stat_figs:
     input:
-        expand(rules.parse_log.output, n=Ns, r=range(R), tool=["julia", "rust"]),
+        expand(
+            rules.parse_log.output, n=Ns, r=range(R), tool=["julia", "rust", "verify"]
+        ),
     output:
         fig="results/stats.png",
         fig_log="results/stats_log.png",

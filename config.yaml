@@ -6,15 +6,18 @@ Ns:
   - 15
   - 20
   - 25
+  - 35
   - 50
   - 75
   - 100
+  - 125
   - 150
   - 200
   - 250
 
 binaries:
-  rust: "./pangraph_rust"
+  rust_release: "./pangraph_rust_release"
+  rust_profiling: "./pangraph_rust_profiling"
   julia: "pangraph"
 
 acc_nums:
