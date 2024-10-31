@@ -24,6 +24,13 @@ The pipeline is designed to run on a slurm cluster (see the [profile file](profi
 snakemake --profile profiles/cluster all
 ```
 
+To run the verification / debugging steps, use:
+
+```sh
+snakemake --profile profiles/cluster verify
+snakemake --profile profiles/cluster debug
+```
+
 ## results
 
 The pipeline produces the two benchmark summary images below, together with [a summary table](results/summary.csv).
