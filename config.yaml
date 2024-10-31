@@ -18,6 +18,7 @@ Ns:
 binaries:
   rust_release: "./pangraph_rust_release"
   rust_profiling: "./pangraph_rust_profiling"
+  rust_debug: "./pangraph_rust_debug"
   julia: "pangraph"
 
 acc_nums:
