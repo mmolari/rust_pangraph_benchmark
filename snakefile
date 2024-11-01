@@ -134,7 +134,7 @@ rule stat_figs:
 
 rule debug:
     input:
-        expand(rules.debug_rust.output, n=Ns, r=0),
+        expand(rules.debug_rust.output, n=[5, 10, 15, 25, 50, 75, 100], r=3),
 
 
 rule verify:

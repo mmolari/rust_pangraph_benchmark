@@ -10,13 +10,16 @@ default-resources:
     runtime: 358
 set-resources:
     build_rust:
-        mem: 50GB
+        mem: 40GB
         cpus_per_task: 16
     build_julia:
-        mem: 50GB
+        mem: 40GB
         cpus_per_task: 16
     verify_rust:
-        mem: 50GB
+        mem: 40GB
+        cpus_per_task: 16
+    debug_rust:
+        mem: 40GB
         cpus_per_task: 16
     parse_log:
         slurm_extra: "'--qos=30min'"
