@@ -29,10 +29,12 @@ rule build_rust:
         log="results/log/rust_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["rust_release"],
+        jobs=16,
     shell:
         """
         /usr/bin/time -v \
             {params.pg} build \
+            -j {params.jobs} \
             -c -l 100 -a 10 -b 5 \
             {input.fa} > {output.graph}.tmp 2> {output.log}
         tr -d '[:space:]' < {output.graph}.tmp > {output.graph}
