@@ -147,3 +147,8 @@ rule verify:
 rule all:
     input:
         rules.stat_figs.output,
+
+
+rule clean_rust:
+    shell:
+        "rm -f results/graphs/rust_* results/log/rust_* results/parsed_log/rust_*"
