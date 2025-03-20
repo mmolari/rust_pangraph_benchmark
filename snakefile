@@ -151,4 +151,4 @@ rule all:
 
 rule clean_rust:
     shell:
-        "rm -f results/graphs/rust_* results/log/rust_* results/parsed_log/rust_*"
+        "rm -f results/graphs/rust_* results/log/rust_* results/parsed_log/rust_* results/stats.png results/stats_log.png results/summary.csv results/graphs/verify_* results/log/verify_*"
