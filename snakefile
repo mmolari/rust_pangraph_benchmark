@@ -36,7 +36,8 @@ rule build_rust:
             {params.pg} build \
             -j {params.jobs} \
             -c -l 100 -a 10 -b 5 \
-            {input.fa} > {output.graph}.tmp 2> {output.log}
+            {input.fa} \
+            -o {output.graph}.tmp 2> {output.log}
         tr -d '[:space:]' < {output.graph}.tmp > {output.graph}
         rm {output.graph}.tmp
         """
@@ -65,7 +66,8 @@ rule verify_rust:
         fa=lambda w: acc_list(int(w.n), int(w.r)),
     output:
         graph="results/graphs/verify_{n}_repl{r}.json",
-        log="results/log/verify_{n}_repl{r}.txt",
+    log:
+        "results/log/verify_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["rust_release"],
     shell:
@@ -74,7 +76,8 @@ rule verify_rust:
             {params.pg} build \
             -c -l 100 -a 10 -b 5 \
             --verify \
-            {input.fa} > {output.graph} 2> {output.log}
+            {input.fa} \
+            -o {output.graph} > {log} 2>&1
         """
 
 
@@ -92,7 +95,8 @@ rule debug_rust:
             {params.pg} build \
             -c -l 100 -a 10 -b 5 \
             --verify \
-            {input.fa} > {output.graph} 2> {output.log}
+            {input.fa} \
+            -o {output.graph} 2> {output.log}
         """
 
 
