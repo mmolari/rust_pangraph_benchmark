@@ -12,7 +12,8 @@ Location of the binaries is encoded in the `binaries` entry of the [config file]
 Any alternative location can be simply encoded by changing the config file.
 
 **datasets:**
-- the `data` folder should contain fasta files with accession numbers specified in the [config file](config.yaml). E.g. file `data/NC_013654.1.fa` for accession number `NC_013654.1`.
+- data will be downloaded from NCBI using [ncbi-acc-download](https://github.com/kblin/ncbi-acc-download).
+- to facilitate the download, you can save your NCBI api key in a `ncbi_api_key.txt` file in the root folder of the repository.
 
 ## running the pipeline
 

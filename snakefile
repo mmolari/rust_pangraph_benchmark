@@ -21,6 +21,31 @@ def acc_list(N, r):
     return sorted([f"data/{accs[i]}.fa" for i in nums])
 
 
+ncbi_api_key = ""
+try:
+    with open("ncbi_api_key.txt", "r") as f:
+        ncbi_api_key = f.read().strip()
+except:
+    print("No NCBI API key found. Save your key in config/ncbi_api_key.txt")
+
+
+rule download_fa:
+    localrule: True
+    output:
+        "data/{acc}.fa",
+    conda:
+        "envs/ncbi-acc-download.yaml"
+    params:
+        api_key=f"--api-key {ncbi_api_key}" if len(ncbi_api_key) > 0 else "",
+    shell:
+        """
+        ncbi-acc-download {wildcards.acc} \
+            --format fasta \
+            {params.api_key} \
+            --out {output}
+        """
+
+
 rule build_rust:
     input:
         fa=lambda w: acc_list(int(w.n), int(w.r)),
