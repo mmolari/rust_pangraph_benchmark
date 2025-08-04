@@ -54,7 +54,7 @@ rule build_rust:
         log="results/log/rust_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["rust_release"],
-        jobs=16,
+        jobs=10,
     shell:
         """
         /usr/bin/time -v \
@@ -76,9 +76,10 @@ rule build_julia:
         log="results/log/julia_{n}_repl{r}.txt",
     params:
         pg=config["binaries"]["julia"],
+        jobs=10,
     shell:
         """
-        export JULIA_NUM_THREADS=16 && \
+        export JULIA_NUM_THREADS={params.jobs} && \
             /usr/bin/time -v \
             {params.pg} build \
             -c -l 100 -a 10 -b 5 \
